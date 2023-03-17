@@ -1,0 +1,13 @@
+@mixin generateHtmlColors(){
+
+    @each $label,$value in $labelsColors {
+        .c-#{$label} {
+          color: $value;
+        }
+        .b-#{$label} {
+            background-color: $value;
+        }
+    }
+}
+
+@include generateHtmlColors();

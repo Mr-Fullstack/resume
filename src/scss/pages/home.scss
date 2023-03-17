@@ -1,0 +1,34 @@
+.hero{
+    
+    article{
+        header{
+            margin-bottom: 6.4rem;
+            p{
+                font-size: 2.4rem;
+            }
+        }
+        p{
+            font-size: 2rem;
+            font-weight: 300;
+        }
+    }
+    
+    @media (max-width:991px) {
+        article{
+            header{
+                p{
+                    font-size: 2rem;
+                }
+            }
+            p{
+                font-size: 1.8rem;
+                font-weight: 300;
+            }
+        } 
+    }
+
+    @media (min-width:1200px) {
+        min-height: 90vh; 
+    }
+    
+}
