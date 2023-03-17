@@ -1,0 +1,130 @@
+.timeline
+{
+
+
+    article
+    {
+        header
+        {
+            p
+            {
+                font-weight: 500;
+                margin-bottom: .8rem;
+                font-size: 2rem;
+            }
+        }
+    }
+
+
+    &-box{
+
+
+        padding-left: 2rem;
+        position: relative;
+
+
+        li{
+            margin-bottom: 6.4rem;
+            position: relative;
+            list-style-type: none;
+            list-style-image: url("../src/assets/list-type.png");
+        }
+
+        &-year
+        {
+            top: 0%;
+            left:60.4rem;
+            position: absolute;
+            z-index: 999;
+            
+            &::before,
+            &::after{
+                content: "";
+                position: absolute;
+                display: block;
+                transform: rotate(45deg);
+                height: 5.9rem;
+                width:  5.9rem;
+                z-index: -2;
+                left: -11px;
+            }
+            &::before
+            {
+                background-color: $shadow;
+            }
+            &::after
+            {
+                background-color: $primary;
+                top: -15px;
+            }
+            span
+            {
+                position: absolute;
+                z-index: 1;
+                font-size: 2.4rem;
+                font-family: "Saira", sans-serif;
+                left: -11px;
+                top: -6px;
+            }
+        }
+
+        &::after{
+            content: "";
+            display: block;
+            position: absolute;
+            left: 62rem;
+            height: calc(100% + 6.4rem);
+            top: 0%;
+            width: 0.5rem;
+            border-radius: 5px;;
+            background-color: rgba($text,0.30)
+        }
+
+        &:last-child
+        {
+            &::after{
+                height: 30%;
+            }
+
+            &-year
+            {
+                top: 100%;
+            }
+        }
+      
+        @media (max-width:991px){
+
+            article
+            {
+                header
+                {
+                    h2
+                    {
+                        top: -0.5rem;
+                        position: relative;
+                    }
+                }
+
+                p
+                {
+                    top: -0.5rem;
+                    position: relative;
+                }
+            }
+
+            &::after
+            {
+                left: 33rem;
+            }
+
+
+            &-year
+            {
+                left: 31.5rem;
+            }
+    
+        }
+
+    }
+
+}

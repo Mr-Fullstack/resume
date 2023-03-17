@@ -1,0 +1,18 @@
+$rectSizes:12,15,20,30,35,60;
+
+.rect\:w-12{
+
+}
+
+
+@mixin generateRectSizes(){
+    @each $size in $rectSizes {
+        .rect\:s-#{$size}
+        {
+            width:fluidPixel($size);
+            height:fluidPixel($size); 
+        }
+    }
+}
+
+@include generateRectSizes();

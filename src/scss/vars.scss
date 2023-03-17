@@ -1,0 +1,18 @@
+$primary:#F67D49;
+$secondary:#6DE881;
+$tertiary:#81B7D5;
+$shadow:#E9723E;
+$background:#282828;
+$text:#F9F9F9;
+
+$labelsColors:(
+    "primary":$primary,
+    "secondary":$secondary,
+    "tertiary":$tertiary,
+    "shadow":$shadow,
+    "background":$background,
+    "text":$text,
+    "secondary-line":rgba($secondary,0.15),
+    "primary-line":rgba($primary,0.15),
+    "tertiary-line":rgba($tertiary,0.15)
+);

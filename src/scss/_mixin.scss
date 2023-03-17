@@ -1,0 +1,11 @@
+@function fluidPixel($pixel) 
+{
+  $result: calc($pixel / 10);
+  $rem: 1rem;
+  @return $result*$rem;
+}
+
+@function getDirectionLinerGradient($direction)
+{
+    @return linear-gradient(to $direction,currentColor, rgba(white,0.01));
+}
