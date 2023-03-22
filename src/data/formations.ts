@@ -1,8 +1,8 @@
 
-export interface Formation
-{
+
+export interface Formation {
     name:string;
-    status:'concluded' |'in-progress';
+    status: "concluded" | "in-progress" ;
     hour:number;
 }
 
@@ -10,19 +10,18 @@ export const formations : Formation[] = [
     {
         name:"MongoDB",
         hour:20,
-        status:'in-progress'
+        status:'in-progress',
     },
     {
         name:"C# Fundamentos",
         hour:40,
-        status:'in-progress'
+        status:'in-progress',
     },
     {
         name:"C# Avançado",
         hour:60,
-        status:'in-progress'
+        status:'in-progress',
     },
-    ,
     {
         name:"Typescript",
         hour:11,
