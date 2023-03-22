@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, KeyboardEvent, KeyboardEventHandler, MouseEventHandler, PropsWithChildren, ReactNode } from 'react'
+import React, { EventHandler, HTMLAttributes, KeyboardEvent, KeyboardEventHandler, MouseEvent, MouseEventHandler, PropsWithChildren, ReactNode } from 'react'
 import { useModal } from '../contexts/ModalContext'
 
 import btnCloseModal from '../../src/assets/close.png'
@@ -19,8 +19,8 @@ export default function Modal( { children }:PropsWithChildren ) {
    };
 
 
-   const handlerCloseClickOutSide = (evt:MouseEventInit)=>{
-    
+   const handlerCloseClickOutSide = (evt:any)=>{
+
         if(evt.target.classList.contains('modal'))
         {
             // console.log("fecha com clique");
