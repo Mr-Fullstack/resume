@@ -1,14 +1,44 @@
-
+import  React from 'react';
 import formationImage from '../assets/formation.png';
 import Section from '../components/Section';
 import SeparatorTitle from '../components/SeparatorTitle';
 import { formations } from '../data/formations';
+import userAnimation from '../hooks/userAnimation';
+
 
 export default function Formation()
 {
+    const getNumberToInterval = (value:number)=> {
+
+        let result = 0
+        for(let count=0; count <= value; count++)
+        {
+            result++
+        }
+
+        return result;
+    }
+
+   const { addElement, elements, animateNumber } = userAnimation();
+
+
+   const generateLowerCaseClassName = (value:string)=>{
+     return value.toLowerCase().split(" ").join("-").trim()
+   }
+
+   React.useEffect(()=>{
+    
+    if( elements.length <= 0 ){
+        let ids: string[]=[];
+        formations.map( ({ name } )=> ids.push(generateLowerCaseClassName(name)));
+        addElement([...ids]);
+    }
+
+   },[elements])
+
 
   return (
-    <Section className='formation'>
+    <Section className='formation' animateTogether={()=>animateNumber(true)}>
         <div className="container">
             <div className="row">
                     <div className="col-full col:md-4">
@@ -28,11 +58,11 @@ export default function Formation()
                             </div>
                             <div className='formation-card-list animation:md-opacity animation:delay-300ms'>
                                 <h2>Cursos Intensivos</h2>
-                                {formations.map(formation=>(
+                                { formations.map( formation => (
                                     <div className='formation-card'>
                                         <div className="d:flex align:baseline justify:between w-100">
                                             <span>{formation.name}</span>
-                                            <span>{formation.hour}h</span>
+                                            <span id={generateLowerCaseClassName(formation.name)} >{  formation.hour }h</span>
                                             {
                                                 <div className={"d:flex align:center justify:between " + formation.status}>
                                                     <div className='rect:s-15' ></div>

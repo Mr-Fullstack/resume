@@ -1,26 +1,37 @@
 import React from 'react'
 import { useLineColor } from '../contexts/LineContext'
 
-interface SectionProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>>{}
+interface SectionProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>>{
+  animateTogether?:(params?:any)=>void
+}
 
-const Section = React.forwardRef<any,SectionProps>( ({children,...props})=>  {
+const Section = React.forwardRef<any,SectionProps>( ({animateTogether,children,...props})=>  {
 
   const ref = React.useRef<HTMLDivElement>(null);
 
   const { changeLineColor } = useLineColor();
 
-  const animaOnTheScreen = (evt:Event)=> {
+  const animaOnTheScreen = ()=> {
     
     if(ref.current)
     {
-      console.warn(ref.current.getBoundingClientRect().top)
-      console.warn(ref.current.classList[0]); 
+      // console.warn(ref.current.getBoundingClientRect().top)
+      // console.warn(ref.current.classList[0]); 
       if(ref.current.getBoundingClientRect().top < window.innerHeight / 2 )
       {
+        const sectionCurrentClassName = ref.current.classList[0]
         // console.warn("passou do top"); 
         ref.current.classList.add("anima");
+
+        if(animateTogether){
+          let timeout = setTimeout(()=>{
+            animateTogether();
+            clearTimeout(timeout)
+          },0)
+          
+        }
         
-        switch(ref.current.classList[0])
+        switch(sectionCurrentClassName)
         {
 
           case 'home':
@@ -59,15 +70,6 @@ const Section = React.forwardRef<any,SectionProps>( ({children,...props})=>  {
     }
   }
 
- React.useEffect(()=>{
-
-    document.addEventListener("scroll",animaOnTheScreen);
-    
-    return(()=>{
-      document.removeEventListener("scroll",animaOnTheScreen);
-    })
-
-  },[])
   React.useEffect(()=>{
 
     document.addEventListener("scroll",animaOnTheScreen);

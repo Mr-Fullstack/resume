@@ -149,7 +149,11 @@
             top: -268px;
             left: -139%;
         }
+        &-box
+        {
 
+            backdrop-filter: blur(4px);
+        }
         &-card
         {
             .in-progress,

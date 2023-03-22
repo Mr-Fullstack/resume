@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, KeyboardEvent, KeyboardEventHandler, MouseEventHandler, PropsWithChildren, ReactNode } from 'react'
 import { useModal } from '../contexts/ModalContext'
 
-
+import btnCloseModal from '../../src/assets/close.png'
 
 export default function Modal( { children }:PropsWithChildren ) {
     
@@ -48,6 +48,7 @@ export default function Modal( { children }:PropsWithChildren ) {
    return (
         <div className='modal'>
             <div className="modal-main">
+                <img src={btnCloseModal} alt="" className='modal-close'  onClick={()=>closeModal()}/>
                 {children}
             </div>
         </div>
