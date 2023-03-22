@@ -79,7 +79,8 @@
     max-width: 100%;
     display: flex;
     cursor: pointer;
-   
+    color: $text;
+    
     &.--online{
         box-shadow: inset -3px -3px 0px 0px $secondary;
     }
@@ -112,7 +113,8 @@
     .project-list,
     .formation-card-list,
     .formation-box,
-    .contact-main
+    .contact-main,
+    .skills-list
     {
         opacity: 0;
     }
@@ -123,4 +125,5 @@
 @import './experiencies';
 @import './project';
 @import './formation';
+@import './skills';
 @import './contact';

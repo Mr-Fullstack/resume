@@ -8,7 +8,7 @@ interface LineProps extends React.HTMLAttributes<HTMLDivElement>{
     color?:string;
 }
 
-export default function Line({color,speed=50,direction,className,...props}:LineProps){
+export default function Line({color,speed=100,direction,className,...props}:LineProps){
  
     const ref = React.useRef<HTMLDivElement>(null) 
 
@@ -89,19 +89,30 @@ export default function Line({color,speed=50,direction,className,...props}:LineP
 
     const lineStayMoviment = ()=> {
       
-        switch(direction)
+        if(!isMaxLimitToFinishTranformLineReaching())
         {
-            case'top':
-            case 'left':
-
-                setDistance(oldState =>  oldState -=duration );
-                break;
-
-            case'bottom':
-            case 'right':
-
-                setDistance(oldState => oldState +=duration ) ;
-                break;
+            
+            
+            switch(direction)
+            {
+                case'top':
+                case 'left':
+    
+                    setDistance(oldState =>  oldState -=duration );
+    
+                    break;
+    
+                case'bottom':
+                case 'right':
+    
+                    setDistance(oldState => oldState +=duration ) ;
+                    break;
+            }
+            
+        }
+        else
+        {
+            resetLineMoviment()
         }
     }
 
@@ -192,6 +203,29 @@ export default function Line({color,speed=50,direction,className,...props}:LineP
         }
     
     },[color])
+
+
+//     const requestRef = React.useRef<any>();
+//     const previousTimeRef = React.useRef<any>();
+
+//     const animate = (time:number) => {
+        
+//         lineStayMoviment()
+//         if(isMaxLimitToFinishTranformLineReaching())
+//         {
+//             previousTimeRef.current = time;
+//             requestRef.current = requestAnimationFrame(animate);
+//         }
+//     };
+
+//   React.useEffect(() => {
+   
+
+//     requestRef.current =  requestAnimationFrame(animate);
+    
+//     return () =>  cancelAnimationFrame(requestRef.current);
+//   }, []);
+
 
     return (
 

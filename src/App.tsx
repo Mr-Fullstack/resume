@@ -1,12 +1,15 @@
 import React from 'react';
 import ContainerLines from './components/ContainerLines';
-import LineContext from './contexts/LineContext';
-import ModalContext from './contexts/ModalContext';
-import Contact from './pages/Contact';
-import Experiencies from './pages/Experiencies';
-import Formation from './pages/Formation';
-import Home from './pages/Home';
-import Projects from './pages/Projects';
+import Skills from './pages/Skills';
+
+
+const LineContext = React.lazy(()=> import('./contexts/LineContext'));
+const ModalContext = React.lazy(()=> import('./contexts/ModalContext'));
+const Contact = React.lazy(()=> import('./pages/Contact'));
+const Experiencies = React.lazy(()=> import('./pages/Experiencies'));
+const Formation = React.lazy(()=> import('./pages/Formation'));
+const Home = React.lazy(()=> import('./pages/Home'));
+const Projects = React.lazy(()=> import('./pages/Projects'));
 
 
 function App() 
@@ -19,6 +22,7 @@ function App()
           <Experiencies />
           <Projects />
           <Formation />
+          <Skills/>
           <Contact />
        </LineContext>  
       </div>

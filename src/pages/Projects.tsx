@@ -46,6 +46,11 @@ export default function Projects()
         </div>
     )
  }
+ 
+ const toggleModal = (e:React.MouseEvent<HTMLAnchorElement>,project:Project)=>{
+    e.preventDefault();
+    openModal(<GenerateProjectModal project={project}/>)
+ }
 
  const ProjectCard = ({project}:ProjectProps)=>{
 
@@ -66,10 +71,7 @@ export default function Projects()
     )
  }
 
- const toggleModal = (e:React.MouseEvent<HTMLAnchorElement>,project:Project)=>{
-    e.preventDefault();
-    openModal(<GenerateProjectModal project={project}/>)
- }
+
 
   return (
     <Section className="project">

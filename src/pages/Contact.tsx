@@ -8,7 +8,7 @@ export default function Contact()
 {
 
   return (
-    <Section className="contact" >
+    <Section className="contact">
         <div className="container">
             <div className="row">
                 <div className="col-full col:md-4 d:md-none">
