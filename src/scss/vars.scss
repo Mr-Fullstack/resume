@@ -1,18 +1,27 @@
 $primary:#F67D49;
 $secondary:#6DE881;
-$tertiary:#81B7D5;
-$shadow:#E9723E;
+$tertiary:#44C5EE;
+$shadow-primary-1:#E9723E;
+$shadow-secondary-1:#6DE881;
 $background:#282828;
+$gray:#646464;
+$gray-2:#4E4B4B;
 $text:#F9F9F9;
+$attetion:#F64848;
 
 $labelsColors:(
     "primary":$primary,
     "secondary":$secondary,
     "tertiary":$tertiary,
-    "shadow":$shadow,
+    "shadow-primary-1":$shadow-primary-1,
+    "shadow-secondary-1":$shadow-secondary-1,
     "background":$background,
     "text":$text,
+    "attetion":$attetion,
+    "gray":$gray,
+    "gray-2":$gray-2,
     "secondary-line":rgba($secondary,0.15),
     "primary-line":rgba($primary,0.15),
-    "tertiary-line":rgba($tertiary,0.15)
+    "tertiary-line":rgba($tertiary,0.15),
+    "text-line":rgba($text,0.15)
 );

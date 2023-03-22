@@ -1,0 +1,142 @@
+@keyframes AnimationSlide {
+    to{
+       transform: translateX(0px);
+    }
+}
+
+@keyframes AnimationOpacity {
+    to {
+       opacity: 1;
+    }
+}
+
+@keyframes AnimationSlideFade {
+    to {
+       transform: translateX(0px);
+       opacity: 1;
+    }
+}
+
+
+@mixin makeAnimationsScreen()
+{
+    &\-slide
+    {
+
+        &-left
+        {
+            transform: translateX(100px);
+            animation: AnimationSlide 300ms linear forwards;
+            &\:fade
+            {
+                transform: translateX(100px);
+                opacity: 0;
+                animation: AnimationSlideFade 300ms linear forwards;
+            }  
+        }
+
+        &-right
+        {
+            transform: translateX(-100px);
+            animation: AnimationSlide linear 300ms forwards;
+            &\:fade
+            {   
+                transform: translateX(-100px);
+                opacity: 0;
+                animation: AnimationSlideFade 300ms linear forwards;
+            }  
+        }
+    }
+
+    &-opacity
+    {
+        opacity: 0;
+        animation: AnimationOpacity 300ms linear forwards;  
+    }
+
+    
+    &-delay
+    {
+        &\:300
+        {
+            &ms{
+                animation-delay: 300ms !important;
+            }
+        }
+    } 
+   
+}
+
+.anima
+{
+    .animation
+    {
+        &\:delay
+        {
+            &\:300
+            {
+                &ms{
+                    animation-delay: 300ms !important;
+                }
+            }
+        }
+    
+        &\:opacity
+        {
+            opacity: 0;
+            animation: AnimationOpacity linear forwards;  
+        }
+
+        &\:slide
+        {
+
+            &-left
+            {
+                transform: translateX(-100px);
+                animation: AnimationSlide linear forwards;  
+            }
+
+            &-right
+            {
+                transform: translateX(100px);
+                animation: AnimationSlide linear forwards;  
+            }
+        }
+
+        @media (min-width:565px) 
+        {
+            &\:sm
+            {
+               @include makeAnimationsScreen;
+            }
+        }
+
+        @media (min-width:965px) 
+        {
+            &\:md
+            {
+
+                @include makeAnimationsScreen;
+
+            }
+        }
+
+        @media (min-width:1200px) 
+        {
+            &\:lg
+            {
+                @include makeAnimationsScreen;
+            }
+        }
+
+        @media (min-width:1400px) 
+        {
+            &\:xl
+            {
+                @include makeAnimationsScreen;
+            }
+        }
+
+
+    }
+}

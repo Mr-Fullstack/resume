@@ -1,19 +1,15 @@
 import React from 'react';
 import { getRandomNumberLimit, getRandomRangeNumber } from '../helpers';
 import { animate, motion, motionValue } from "framer-motion"
-interface LineProps extends React.HTMLAttributes<HTMLDivElement> {
+
+interface LineProps extends React.HTMLAttributes<HTMLDivElement>{
     direction:'top'|'bottom'|'left'|'right';
     speed?:number;
+    color?:string;
 }
 
-interface LineOptions {
-    transform:string;
-    opacity:number
-}
-
-export default function Line({speed=50,direction,className,...props}:LineProps){
+export default function Line({color,speed=50,direction,className,...props}:LineProps){
  
-
     const ref = React.useRef<HTMLDivElement>(null) 
 
     const getInitialPositonToTransform = ()=> {
@@ -39,8 +35,8 @@ export default function Line({speed=50,direction,className,...props}:LineProps){
     const [ duration, setDuration] = React.useState(speed);
     const [ time, setTime] = React.useState(getRandomRangeNumber(50,150));
 
-    const [ lineColor, setLineColor] = React.useState('c-secondary-line');
-    const [ rectColor, setRectColor] = React.useState('b-secondary');
+    const [ lineColor, setLineColor] = React.useState('');
+    const [ rectColor, setRectColor] = React.useState('');
 
     const getOptionsTransform = ()=> {
 
@@ -90,17 +86,6 @@ export default function Line({speed=50,direction,className,...props}:LineProps){
         }
     }
     
-    const lineColors = ['c-secondary-line','c-primary-line','c-tertiary-line'];
-    const rectColors = ['b-secondary','b-primary','b-tertiary'];
-
-   
-    const rangeLineColors = ()=>{
-        setLineColor( lineColors[getRandomNumberLimit(3)] ) ;
-    }
-
-    const rangeRectColors = ()=>{
-        return rectColors[getRandomNumberLimit(3)];
-    }
 
     const lineStayMoviment = ()=> {
       
@@ -128,12 +113,12 @@ export default function Line({speed=50,direction,className,...props}:LineProps){
             ref.current.style.opacity = '0';
         }
         
-        setDuration( getRandomRangeNumber(25,50) );
+        setDuration( getRandomRangeNumber(20,35) );
         setDistance( getInitialPositonToTransform());
 
         let timeout = setTimeout(()=>{
 
-            setTime( getRandomRangeNumber(50,150))
+            setTime( getRandomRangeNumber(50,120))
 
             switch(direction)
             {
@@ -155,7 +140,7 @@ export default function Line({speed=50,direction,className,...props}:LineProps){
 
                 if( ref.current)
                 {
-                    ref.current.style.opacity = '1';
+                    ref.current.style.opacity = '0.8';
                 }
     
                 clearTimeout(timeout2)
@@ -193,12 +178,27 @@ export default function Line({speed=50,direction,className,...props}:LineProps){
       
     },[distance,time,ref])
 
+    React.useEffect(()=>{
+
+        if(color)
+        {
+            setLineColor(`${color}-line`);
+            setRectColor(color.replace("c","b")); 
+            
+        }else
+        {
+            // setLineColor("c-primary-line");
+            // setRectColor("b-primary"); 
+        }
+    
+    },[color])
+
     return (
 
         <motion.div ref={ref} className={'line '+ 'line:'+direction +' '+ lineColor +' '+ className }
          initial= {getOptionsTransform()}
          animate= {getOptionsTransform()}>
-            <div className={'rect:s-12 ' + rectColor }></div>
+            <div className={'rect:s-10 ' + rectColor }></div>
         </motion.div>
 
     )

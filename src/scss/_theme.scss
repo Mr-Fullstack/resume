@@ -2,10 +2,10 @@
 
     @each $label,$value in $labelsColors {
         .c-#{$label} {
-          color: $value;
+          color: $value !important;
         }
         .b-#{$label} {
-            background-color: $value;
+            background-color: $value !important;
         }
     }
 }
