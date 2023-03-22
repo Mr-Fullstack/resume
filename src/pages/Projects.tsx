@@ -19,12 +19,10 @@ export default function Projects()
  const GenerateProjectModal = ({project}:ProjectProps) =>{
     return( 
         <div className="modal-content">
-            <div className="modal-header">
-              <h2 className="modal-title">{project.name}</h2>
-              <a href={project.url} target={'_blank'}>Ver online</a>  
-            </div>
           {
             <div className="modal-body">
+                <h2 className="modal-title">{project.name}</h2>
+                <a href={project.url} target={'_blank'}>Ver online</a>  
                  <div className="row">
                     <div className="col-full col:md-8">
                     { project.description.map((desc) => {
