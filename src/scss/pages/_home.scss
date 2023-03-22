@@ -1,0 +1,77 @@
+.home{
+       
+    .btn-available-job{
+        margin: auto;
+        margin-top: 3.2rem;
+        transform:translateY(-100%); 
+        animation:  showAvailableJob .5s ease-in-out forwards;
+    }
+
+    @keyframes showAvailableJob {
+        to{
+            transform:translateY(0px); 
+        }
+    }
+
+    .hero{
+    
+        article{
+    
+            h1{
+                color: $secondary;
+            }
+    
+            header{
+    
+                margin-bottom: 6.4rem;
+                p{
+                    font-size: 2.4rem;
+                    color: $tertiary;
+                }
+            }
+            p{
+                font-size: 2rem;
+                font-weight: 300;
+            }
+            img{
+                width: 36.6rem;
+                margin-top: 3.2rem;
+            }
+        }
+        
+        @media (max-width:991px) {
+            padding-top: 3.2rem;
+    
+            article{
+                header{
+                    p{
+                        font-size: 2rem;
+                    }
+                }
+                p{
+                    font-size: 1.8rem;
+                    font-weight: 300;
+                }
+            } 
+        }
+    
+        @media (min-width:1200px) {
+            min-height: 90vh; 
+        }
+    
+    }
+
+    @media (min-width:1200px) {
+        position: relative;
+       .btn-available-job
+       {
+            top: 3.2rem;
+            position: absolute;
+            right: 3.2rem;
+            z-index: 9999;
+       }
+    }
+}
+
+
+

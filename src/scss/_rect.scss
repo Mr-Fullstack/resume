@@ -1,9 +1,4 @@
-$rectSizes:12,15,20,30,35,60;
-
-.rect\:w-12{
-
-}
-
+$rectSizes:10,12,15,20,30,35,60;
 
 @mixin generateRectSizes(){
     @each $size in $rectSizes {
