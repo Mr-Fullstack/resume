@@ -8,9 +8,10 @@ interface LineProps extends React.HTMLAttributes<HTMLDivElement>{
     color?:string;
 }
 
-export default function Line({color,speed=100,direction,className,...props}:LineProps){
+export default function Line( { color, speed= 100, direction, className, ...props }: LineProps )
+{
  
-    const ref = React.useRef<HTMLDivElement>(null) 
+    const ref = React.useRef<HTMLDivElement>( null ) 
 
     const getInitialPositonToTransform = ()=> {
         
@@ -30,13 +31,17 @@ export default function Line({color,speed=100,direction,className,...props}:Line
         }
     }
 
-    const [ distance, setDistance] = React.useState(getInitialPositonToTransform());
-    const [ position, setPosition] = React.useState(getRandomRangeNumber(25,100));
-    const [ duration, setDuration] = React.useState(speed);
-    const [ time, setTime] = React.useState(getRandomRangeNumber(50,150));
+    const [ distance, setDistance ] = React.useState( getInitialPositonToTransform() );
 
-    const [ lineColor, setLineColor] = React.useState('');
-    const [ rectColor, setRectColor] = React.useState('');
+    const [ position, setPosition ] = React.useState( getRandomRangeNumber( 25, 100 ) );
+
+    const [ duration, setDuration ] = React.useState( speed);
+
+    const [ time, setTime ] = React.useState( getRandomRangeNumber( 50, 150 ) );
+
+    const [ lineColor, setLineColor ] = React.useState('');
+
+    const [ rectColor, setRectColor ] = React.useState('');
 
     const getOptionsTransform = ()=> {
 
@@ -45,55 +50,51 @@ export default function Line({color,speed=100,direction,className,...props}:Line
             case'bottom':
             case'top':
                
-                return {
-                    x:position,
-                    y:distance
-                }
+                return( 
+
+                    {
+                        x: position,
+                        y: distance
+                    }
+                )
                 
             case 'left':
             case 'right':
-                return {
-                    x:distance,
-                    y:position
-                }   
+
+                return(
+
+                    {
+                        x: distance,
+                        y: position
+                    }   
+                )
         }
     }
 
-    const getMaxLimitToFinishTransformLine = ()=>{
-
-        switch(direction)
-        {
-            case'left':
-            case'top':
-            case 'bottom':
-            case 'right':
-                return getInitialPositonToTransform() * -1 
-        }
-    }
+    const getMaxLimitToFinishTransformLine = getInitialPositonToTransform() * -1;
 
     const isMaxLimitToFinishTranformLineReaching = ()=> {
 
-        switch(direction)
+        switch( direction )
         {
             case'left':
             case'top':
-                return distance <= getMaxLimitToFinishTransformLine()
+            
+                return distance <= getMaxLimitToFinishTransformLine
 
             case 'right':
             case 'bottom':
-                return distance >= getMaxLimitToFinishTransformLine()
+
+                return distance >= getMaxLimitToFinishTransformLine
 
         }
     }
     
-
     const lineStayMoviment = ()=> {
       
-        if(!isMaxLimitToFinishTranformLineReaching())
+        if( !isMaxLimitToFinishTranformLineReaching() )
         {
-            
-            
-            switch(direction)
+            switch( direction )
             {
                 case'top':
                 case 'left':
@@ -105,10 +106,10 @@ export default function Line({color,speed=100,direction,className,...props}:Line
                 case'bottom':
                 case 'right':
     
-                    setDistance(oldState => oldState +=duration ) ;
+                    setDistance(oldState => oldState +=duration );
+
                     break;
             }
-            
         }
         else
         {
@@ -165,74 +166,59 @@ export default function Line({color,speed=100,direction,className,...props}:Line
     }
 
 
-    React.useEffect(()=>{
+    React.useEffect( ()=> {
 
-        if(ref.current){
+        if( ref.current )
+        {
 
-            const timeInterval = setInterval(()=>{
+            const timeInterval = setInterval( ()=> {
             
                 if( !isMaxLimitToFinishTranformLineReaching() )
                 {
                     lineStayMoviment()
                 }
+
                 else
                 {
-                    
                     resetLineMoviment();  
                 }
+
             },time)
     
-            return(()=>{
-                clearInterval(timeInterval)
+            return( ()=> {
+
+                clearInterval( timeInterval )
             })
         }
       
-    },[distance,time,ref])
+    },[ distance, time, ref ] )
 
-    React.useEffect(()=>{
+    React.useEffect( ()=> {
 
-        if(color)
+        if( color )
         {
-            setLineColor(`${color}-line`);
-            setRectColor(color.replace("c","b")); 
-            
-        }else
-        {
-            // setLineColor("c-primary-line");
-            // setRectColor("b-primary"); 
+            setLineColor( `${color}-line` );
+
+            setRectColor( color.replace( "c", "b" ) ); 
         }
+
     
-    },[color])
+    },[ color ] )
 
 
-//     const requestRef = React.useRef<any>();
-//     const previousTimeRef = React.useRef<any>();
-
-//     const animate = (time:number) => {
-        
-//         lineStayMoviment()
-//         if(isMaxLimitToFinishTranformLineReaching())
-//         {
-//             previousTimeRef.current = time;
-//             requestRef.current = requestAnimationFrame(animate);
-//         }
-//     };
-
-//   React.useEffect(() => {
-   
-
-//     requestRef.current =  requestAnimationFrame(animate);
-    
-//     return () =>  cancelAnimationFrame(requestRef.current);
-//   }, []);
-
+    const motionOptions = {
+        ref, 
+        className: 'line '+ 'line:'+direction +' '+ lineColor +' '+ className ,
+        initial: getOptionsTransform(),
+        animate: getOptionsTransform(),
+    }
 
     return (
 
-        <motion.div ref={ref} className={'line '+ 'line:'+direction +' '+ lineColor +' '+ className }
-         initial= {getOptionsTransform()}
-         animate= {getOptionsTransform()}>
-            <div className={'rect:s-10 ' + rectColor }></div>
+        <motion.div { ...motionOptions } >
+
+            <div className={ 'rect:s-10 ' + rectColor }></div>
+
         </motion.div>
 
     )
