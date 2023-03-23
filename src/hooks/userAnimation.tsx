@@ -2,65 +2,82 @@ import React from 'react'
 
 export default function userAnimation() {
 
-  const [elements,setElements] = React.useState<string[]>([]);
-  const [animate,setAnimate] = React.useState<boolean>(false);
+  const [ elements, setElements ] = React.useState< string[] >( [ ] );
+  const [ animate, setAnimate ] = React.useState< boolean >( false );
 
   const addElement=(value:any)=>{
-    setElements(oldState=>[...oldState,...value]);
+
+    setElements( oldState => [ ...oldState, ...value ] );
+
   }
 
-  const animateNumber = (trigger:boolean)=>{
-    setAnimate(trigger)
+  const animateNumber = ( trigger: boolean)=>{
+
+    setAnimate( trigger )
+
   }
 
 
-  const incrementNumber = (number:HTMLElement)=> {
+  const incrementNumber = ( number: HTMLElement )=> {
 
     const total = +number.innerText.replace('h','');
+
     number.innerText = '0';
+
     const increment = 2;
 
-    console.log(increment);
     let count = 0;
     
-    const interval = setInterval(()=>{
+    const interval = setInterval( ()=> {
 
-        count+=increment;
-        number.innerText = count.toString();
+        count += increment;
 
-        if(count>total)
+        number.innerText = count + 'h';
+
+        if( count > total )
         {
-            number.innerText = total.toString();
-            clearInterval(interval)
+
+          number.innerText = total + 'h' ;
+
+          clearInterval( interval )
+
         }
 
-    },100*Math.random())
+    }, 100 * Math.random() )
+
   }
 
-  const getNumbers = ()=>{
+  const getNumbers = ()=>
+  {
     elements.map(element => {
-        const number = document.getElementById(element);
-        if(number) incrementNumber(number);
+
+      const number = document.getElementById( element );
+
+      if( number ) incrementNumber( number );
+
     })
+
   }
 
-  React.useEffect(()=>{
+  React.useEffect( ()=> {
    
-        if(animate)
+        if( animate )
         {
-            if(elements.length >=1 )
+            if( elements.length >= 1 )
             {
-                getNumbers()
+              getNumbers()
             }
         }
 
-  },[animate])
+  },[ animate ] )
 
   return {
+
     addElement,
     elements,
     animate,
     animateNumber
+    
   }
 
 

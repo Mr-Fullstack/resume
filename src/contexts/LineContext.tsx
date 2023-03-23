@@ -4,26 +4,32 @@ import { isMobile } from './../helpers/index';
 
 interface LineContextProps
 {
-    changeLineColor:(newColor:string)=>string;
+    changeLineColor:( newColor: string )=> string;
 }
-const ContextLine = React.createContext({});
 
-export default function LineContext({children}:React.PropsWithChildren) {
+const ContextLine = React.createContext( {} );
 
-    const [color, setColor] = React.useState<string>("c-primary");
+export default function LineContext( { children }: React.PropsWithChildren ) {
 
-    const changeLineColor = (newColor:string)=>{
-        setColor(newColor)
+    const [ color, setColor ] = React.useState< string >( "c-primary" );
+
+    const changeLineColor = ( newColor: string )=> {
+
+        setColor( newColor )
     }
+
     return (
-        <ContextLine.Provider value={{ changeLineColor }}>
-            { !isMobile() && <ContainerLines color={color}/> }
-            {children}
+
+        <ContextLine.Provider value={ { changeLineColor } }>
+
+            { !isMobile() && <ContainerLines color={ color } /> }
+
+            { children }
+
         </ContextLine.Provider>
   )
+
 }
 
 
-export  const useLineColor = ()=>{
-    return React.useContext(ContextLine) as LineContextProps ;
-}
+export  const useLineColor = ()=> React.useContext( ContextLine ) as LineContextProps ;

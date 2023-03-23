@@ -7,64 +7,132 @@ import { makeBold } from '../helpers';
 import projectImage from '../assets/project.png';
 import SeparatorTitle from '../components/SeparatorTitle';
 import Section from '../components/Section';
-interface ProjectProps{
-    project:Project;
+
+interface ProjectProps
+{
+    project: Project;
 }
 
 export default function Projects() 
 {
 
- const {openModal, closeModal} = useModal(); 
+ const { openModal, closeModal } = useModal(); 
    
- const GenerateProjectModal = ({project}:ProjectProps) =>{
+ const GenerateProjectModal = ( { project }: ProjectProps ) =>{
+
     return( 
+
         <div className="modal-content">
+
           {
             <div className="modal-body">
-                <h2 className="modal-title">{project.name}</h2>
-                <a href={project.url} target={'_blank'}>Ver online</a>  
+
+                <h2 className="modal-title">
+
+                    { project.name }
+
+                </h2>
+
+                <a href={ project.url } target={ '_blank' }>Ver online</a>  
+
                  <div className="row">
+
                     <div className="col-full col:md-8">
-                    { project.description.map((desc) => {
-                        const pHTML = document.createElement("p");
-                        pHTML.innerHTML = makeBold(desc, project.stack); 
-                        return <p key={project.name + Math.random()} dangerouslySetInnerHTML={{ __html:makeBold(desc, project.stack)}}></p>;
-                    })}
+
+                    {   
+                        project.description.map( desc => {
+
+                            const __html = makeBold( desc, project.stack );
+
+                            return <p key={ project.name + Math.random() } dangerouslySetInnerHTML={ { __html } } ></p>;
+
+                        })
+                    }
+
                     </div>
+
                     <div className="col-full col:md-4">
+
                         <p className='technology'> 
-                             <strong>Tecnologias:</strong> <br/> {project.stack.map(tecnology=>(
-                            <span key={tecnology} className="tag">{tecnology}</span>
-                         ))} 
+
+                            <strong>Tecnologias:</strong> <br/> 
+                             
+                            { 
+                                project.stack.map( tecnology => (
+
+                                    <span key={ tecnology } className="tag">
+
+                                        { tecnology }
+
+                                    </span>
+
+                                ))
+                            }
+
                         </p>
+
                     </div>
+
                  </div>
+
             </div>
+
           }  
+
         </div>
     )
  }
  
- const toggleModal = (e:React.MouseEvent<HTMLAnchorElement>,project:Project)=>{
+ const toggleModal = ( e: React.MouseEvent< HTMLAnchorElement >, project: Project ) => {
+
     e.preventDefault();
-    openModal(<GenerateProjectModal project={project}/>)
+
+    openModal( <GenerateProjectModal project={ project } /> )
+
  }
 
- const ProjectCard = ({project}:ProjectProps)=>{
+ const ProjectCard = ( { project } : ProjectProps )=>{
 
    return(
+
         <div className="col-full col:md-6">
+
             <div className="project-card">
-                <h3>{project.name}</h3>
-                <a href={project.url}target="_blank" rel="noopener noreferrer">Ver online</a> 
-                <p> {project.description[0]}</p>
-                <a href="#" onClick={e=>toggleModal(e,project)}>Ler mais</a>
-                <p className='technology'>
-                    {project.stack.map(tecnology=>(
-                        <span key={tecnology} className="tag">{tecnology}</span>
-                    ))} 
+
+                <h3>
+
+                    { project.name }
+
+                </h3>
+
+                <a href={ project.url } target="_blank" rel="noopener noreferrer" >Ver online</a> 
+
+                <p> 
+
+                    { project.description[ 0 ] }
+
                 </p>
+
+                <a href="#" onClick={e=>toggleModal(e,project)}>Ler mais</a>
+
+                <p className='technology'>
+
+                    {  
+                        project.stack.map( tecnology => (
+
+                            <span key={ tecnology } className="tag">
+
+                                { tecnology }
+
+                            </span>
+
+                        ))
+                    } 
+
+                </p>
+
             </div>
+
         </div>
     )
  }
