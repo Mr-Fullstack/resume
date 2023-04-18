@@ -1,5 +1,5 @@
 import React from 'react';
-import contact from '../assets/contact.png';
+import contact from '../assets/contact.webp';
 import Section from '../components/Section';
 import SeparatorTitle from '../components/SeparatorTitle';
 

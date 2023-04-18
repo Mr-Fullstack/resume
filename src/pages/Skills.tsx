@@ -2,7 +2,7 @@ import React from 'react'
 import Section from '../components/Section'
 import SeparatorTitle from '../components/SeparatorTitle'
 
-import skillImage from '../assets/skills.png';
+import skillImage from '../assets/skills.webp';
 import { skills } from '../data/skills';
 
 export default function Skills() 

@@ -1,5 +1,5 @@
 import  React from 'react';
-import formationImage from '../assets/formation.png';
+import formationImage from '../assets/formation.webp';
 import Section from '../components/Section';
 import SeparatorTitle from '../components/SeparatorTitle';
 import { formations } from '../data/formations';
@@ -72,7 +72,7 @@ export default function Formation()
 
                                 { formations.map( formation => (
 
-                                    <div className='formation-card'>
+                                    <div className='formation-card' key={formation.name}>
 
                                         <div className="d:flex align:baseline justify:between w-100">
 

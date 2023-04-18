@@ -1,7 +1,6 @@
 import React from 'react'
 import { ExperiencesProps, experienciesData } from '../data/experiences';
-
-import experienceImage from '../assets/experience.png';
+import experienceImage from '../assets/experience.webp';
 import SeparatorTitle from '../components/SeparatorTitle';
 import Section from '../components/Section';
 
@@ -26,13 +25,11 @@ export default function  Experiencies()
            
             timeLineData.push(
 
-                <ul className='timeline-box' key={years[key]}>
+                <div className='timeline-box' key={years[key]}>
 
                     { experiences.map((experience,index) => (
 
-                        <li key={ index + new Date().getMilliseconds() } >
-
-                            <article>
+                            <article key={ index + new Date().getMilliseconds() }>
 
                                  <header>
 
@@ -72,9 +69,6 @@ export default function  Experiencies()
                                 </p>
 
                              </article>
-
-                        </li>
-
                     ))}
 
                     <div className='timeline-box-year'>
@@ -87,7 +81,7 @@ export default function  Experiencies()
 
                     </div>
 
-                </ul>
+                </div>
             )
             
         }
