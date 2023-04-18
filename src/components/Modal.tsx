@@ -1,7 +1,7 @@
 import React, {  PropsWithChildren } from 'react'
 import { useModal } from '../contexts/ModalContext'
 
-import btnCloseModal from '../../src/assets/close.png'
+import btnCloseModal from '../../src/assets/close.webp'
 
 export default function Modal( { children }: PropsWithChildren ) 
 {

@@ -62,9 +62,10 @@
 
         .image-section
         {
-            right: -553px;
+            right: 0px;
             top: -414px;
             max-width: 1100px;
+            transform: translate3d(49%, 25px, 0px);
         }   
 
     }

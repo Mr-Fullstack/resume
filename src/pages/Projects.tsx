@@ -4,7 +4,7 @@ import { useModal } from '../contexts/ModalContext';
 import { Project, projects } from '../data/projects';
 import { makeBold } from '../helpers';
 
-import projectImage from '../assets/project.png';
+import projectImage from '../assets/project.webp';
 import SeparatorTitle from '../components/SeparatorTitle';
 import Section from '../components/Section';
 

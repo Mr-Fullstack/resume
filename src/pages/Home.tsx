@@ -4,8 +4,8 @@ import ButtonAvailableJob from '../components/ButtonAvailableJob';
 import Section from '../components/Section';
 import SeparatorTitle from '../components/SeparatorTitle';
 
-import my_self from '../assets/my_self.png';
-import tecs from '../assets/tecs.png';
+import my_self from '../assets/my_self.webp';
+import tecs from '../assets/tecs.webp';
 
 export default function Home() 
 {
