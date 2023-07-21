@@ -55,6 +55,15 @@ export default function Formation()
                     </div>
 
                     <div className="col-12 col:md-5">
+                            <div className="formation-box animation:md-opacity animation:delay-300ms">
+
+                                <span>Formação Backend</span> 
+
+                                <h3 className='fw-600'>Backend com foco em Node JS</h3>
+
+                                <span>Cubos Academy</span> 
+
+                            </div>
 
                             <div className="formation-box animation:md-opacity animation:delay-300ms">
 
@@ -68,7 +77,7 @@ export default function Formation()
 
                             <div className='formation-card-list animation:md-opacity animation:delay-300ms'>
 
-                                <h2>Cursos Intensivos</h2>
+                                <h2>Cursos</h2>
 
                                 { formations.map( formation => (
 

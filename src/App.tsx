@@ -19,9 +19,9 @@ function App()
       <div className="app-theme-light">
        <LineContext>
           <Home/>
-          <Experiencies />
-          <Projects />
           <Formation />
+          <Projects />
+          <Experiencies />
           <Skills/>
           <Contact />
        </LineContext>  

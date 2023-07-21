@@ -11,16 +11,16 @@ export  interface ExperienceProps{
 export const experienciesData : ExperiencesProps = {
     2020:[
         {
-            company:"Level 123",
-            job_role:"Desenvolvedor Web - Júnior",
-            descritption:"Desenvolvimento de sites com Wordpress - codificação de layout HTML com PHP7, CSS3 e javascript a partir de design em adobeXD.",
-            stack:["Javascript","PHP7","Wordpress","CSS3","GITLAB","AdobeXD"]
-        },
-        {
             company:"Reis da Bola",
             job_role:"Desenvolvedor Front End - Júnior",
             descritption:"Codificação, estilização e implementação de interfaces com ReactJS a partir de modelos PSDs.",
             stack:["Javascript","SASS","GIT","Photoshop","ReactJS"]
+        },
+        {
+            company:"Level 123",
+            job_role:"Desenvolvedor Web - Júnior",
+            descritption:"Desenvolvimento de sites com Wordpress - codificação de layout HTML com PHP7, CSS3 e javascript a partir de design em adobeXD.",
+            stack:["Javascript","PHP7","Wordpress","CSS3","GITLAB","AdobeXD"]
         }
     ],
     2022:[
