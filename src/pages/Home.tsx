@@ -2,11 +2,10 @@ import React from 'react'
 import ButtonAvailableJob from '../components/ButtonAvailableJob';
 import Section from '../components/Section';
 import SeparatorTitle from '../components/SeparatorTitle';
-import my_self from '../assets/my_self.webp';
 import tecs from '../assets/tecs.webp';
-import heroImage from '../assets/hero.png';
-import heroImageShadow from '../assets/shadow.png';
-import heroImageLight from '../assets/hero-light.png';
+import heroImage from '../assets/hero.webp';
+import heroImageShadow from '../assets/shadow.webp';
+import heroImageLight from '../assets/hero-light.webp';
 export default function Home() 
 {
 	return (
