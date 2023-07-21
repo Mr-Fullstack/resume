@@ -1,58 +1,50 @@
-.skills{
+.skills {
 
-    &-list{
-        h2
-        {
-            margin-bottom: 2rem;
-        }
-    }
+	&-list {
+		h2 {
+			margin-bottom: 2rem;
+		}
+	}
 
-    
-    .skill-card
-    {
-        padding: 2rem 1.6rem;
-        width: 100%;
-        background-color: rgba($gray,0.10);
-        box-shadow: inset 3px 0px 0px $secondary;
-        margin-bottom: 1.6rem;   
-        line-height: 1;
 
-        span
-        {
-            font-size: 1.4rem;
-            color: $secondary;
-            text-transform: uppercase;
-        }
-        p
-        {
-            margin-top: 1.6rem;
-            font-size: 2rem;
-        }
+	.skill-card {
+		padding: 2rem 1.6rem;
+		width: 100%;
+		background-color: rgba($gray, 0.10);
+		box-shadow: inset 3px 0px 0px $secondary;
+		margin-bottom: 1.6rem;
+		line-height: 1;
 
-        &\:coming-soon
-        {
-            box-shadow: inset 3px 0px 0px $tertiary;
+		span {
+			font-size: 1.4rem;
+			color: $secondary;
+			text-transform: uppercase;
+		}
 
-            span
-            {
-                color: $tertiary;
-            }
-        }  
-    }
+		p {
+			margin-top: 1.6rem;
+			font-size: 2rem;
+		}
 
-    @media (min-width:1200px) 
-    {
-        margin-top: 48rem;
-        
-        .title-section
-        {
-            max-width: 4ch;
-        }
-    
-        .image-section
-        {
-            top: -9vh;
-            left: -150%;
-        }
-    }
+		&\:coming-soon {
+			box-shadow: inset 3px 0px 0px $tertiary;
+
+			span {
+				color: $tertiary;
+			}
+		}
+	}
+
+	@media (min-width:1200px) {
+		margin-top: 48rem;
+
+		.title-section {
+			max-width: 4ch;
+		}
+
+		.image-section {
+			top: -9vh;
+			left: -150%;
+		}
+	}
 }

@@ -30,6 +30,12 @@
         h3+span{
             font-size: 1.4rem;
         }
+
+        &-detail{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 
     &-card
