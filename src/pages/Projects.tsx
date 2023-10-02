@@ -64,10 +64,17 @@ export default function Projects()
 		return (
 			<div className="col-full col:md-6">
 				<div className="project-card">
-					<h3>
-						{project.name}
-					</h3>
-					<a href={project.url} target="_blank" rel="noopener noreferrer" >Ver online</a>
+					<div className="project-card-header">
+						<div>
+							<h3>
+								{project.name}
+							</h3>
+							<a href={project.url} target="_blank" rel="noopener noreferrer">Ver online</a>
+						</div>
+						<div className={`project-card-header-status  ${  project.concluded ? 'close' : 'open'}`}>
+							<p>{ project.concluded ? "Concluído": "Em andamento" }</p>
+						</div>
+					</div>
 					<p>
 						{project.description[0]}
 					</p>

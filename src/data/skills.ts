@@ -5,21 +5,25 @@ interface SkillsProps{
     current:Project,
 }
 
-
 type Project = string[];
 
 export const skills : SkillsProps = {
     comingSoon:
     [
-        "Node",
         "Desenvolvimento de jogos",
         "C#",
         "MongoDB",
         "Unity",
+        "Nest JS",
+        "Vue JS",
+        "Svelte",
+        "Java",
+        "Kotlin"
     ],
     current:
     [ 
         "Front End",
+        "Node - Express",
         "Landing page",
         "UX / UI Design",
         "Sistemas web",
@@ -28,9 +32,12 @@ export const skills : SkillsProps = {
         "Modelagem UML",
         "Integração com APIs externa",
         "Wordpress API",
-        "SQL - MYSQL",
-        "Sass - Styled Components - Tailwind ", 
+        "Firebase",
+        "Supabase",
+        "Knex - Prisma ORM",
+        "React JS - Next JS - Vite JS",
+        "SQL - MYSQL - POSTGRESQL",
+        "CSS - Sass - Styled Components - Tailwind - StoryBook",
    ]
 }
-
 

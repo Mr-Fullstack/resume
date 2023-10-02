@@ -34,6 +34,59 @@
             -webkit-line-clamp: 2;
             text-overflow: clip;
         }
+        &-header{
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            &-status{
+                color:$text;
+                p{
+                    display: flex;
+                    gap:.5rem;
+                    align-items: center;
+                    padding: .4rem;
+                    //border-radius: .2rem;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    width: auto;
+                    text-align: right;
+                    position: relative;
+                    text-shadow: 0px 2px 5px #212121;
+                    &:before{
+                        content: "";
+                        display: block;
+                        //position: absolute;
+                        right: 0px;
+                        top: -10x;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 230295px;
+                    }
+                }
+
+                width: fit-content;
+                display: flex;
+                align-items: center;
+                &.close{
+                    p{
+                        background-color: rgba($secondary,0.2);
+                        border:.1rem solid $secondary;
+                        &:before{
+                            background-color: $secondary;
+                        }
+                    }
+                }
+                &.open{
+                    p{
+                        background-color: rgba($primary,0.2);
+                        border:.1rem solid $primary;
+                        &:before{
+                            background-color: $primary;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @media (min-width:1200px) 
