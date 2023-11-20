@@ -22,7 +22,7 @@ export default function Skills()
 						<div className="row">
 							<div className="col-full col:md-6">
 								<div className="skills-list animation:opacity animation:delay-300ms">
-									<h2>Habilidades desbloqueda</h2>
+									<h2>Habilidades Atuais</h2>
 									{
 										skills.current.map(skill => (
 											<div className="skill-card" key={skill}>
@@ -37,7 +37,7 @@ export default function Skills()
 							</div>
 							<div className="col-full col:md-6">
 								<div className="skills-list animation:opacity animation:delay-300ms">
-									<h2>Novas habilidades em breve</h2>
+									<h2>Habilidades em breve</h2>
 									{
 										skills.comingSoon.map(skill => (
 											<div className="skill-card skill-card:coming-soon" key={skill}>

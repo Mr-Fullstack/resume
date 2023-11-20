@@ -1,76 +1,53 @@
-import React, {  PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { useModal } from '../contexts/ModalContext'
 
 import btnCloseModal from '../../src/assets/close.webp'
 
-export default function Modal( { children }: PropsWithChildren ) 
-{
-    
-   const { modals, closeModal } = useModal();
+export default function Modal({ children }: PropsWithChildren) {
 
-   const handlerCloseModal = ( evt: Event )=>{
+  const { modals, closeModal } = useModal();
 
-    if(evt instanceof KeyboardEvent)
-    {
+  const handlerCloseModal = (evt: Event) => {
 
-        if( evt.key === 'Escape' )
-        {
-            closeModal()
-        }
+    if (evt instanceof KeyboardEvent) {
+      if (evt.key === 'Escape') {
+        closeModal()
+      }
     }
 
-    if( evt instanceof MouseEvent )
-    {
-        handlerCloseClickOutSide( evt )
+    if (evt instanceof MouseEvent) {
+      handlerCloseClickOutSide(evt)
     }
+  };
 
-   };
+  const handlerCloseClickOutSide = (evt: Event) => {
+    if (evt.target instanceof HTMLElement) {
+      if (evt.target.classList.contains('modal')) {
+        closeModal()
+      }
+    }
+  };
 
+  React.useEffect(() => {
 
-   const handlerCloseClickOutSide = ( evt: Event )=>
-   {
-        if( evt.target instanceof HTMLElement )
-        {
-            if( evt.target.classList.contains( 'modal' ) )
-            {
-                closeModal()
-            }
-        }
-   };
+    document.addEventListener("keydown", handlerCloseModal);
+    document.addEventListener("click", handlerCloseModal);
 
-
-   React.useEffect( ()=> {
-
-    document.addEventListener( "keydown", handlerCloseModal );
-
-    document.addEventListener( "click", handlerCloseModal );
-
-    return( ()=> {
-
-            if( modals.length <= 0 )
-            {
-                closeModal();
-
-                document.removeEventListener( "keydown", handlerCloseModal );
-
-                document.removeEventListener( "click", handlerCloseModal );
-            }
+    return (() => {
+      if (modals.length <= 0) {
+        closeModal();
+        document.removeEventListener("keydown", handlerCloseModal);
+        document.removeEventListener("click", handlerCloseModal);
+      }
     })
+  }, [modals])
 
-   },[ modals ] )
-
-   return (
-
-        <div className='modal'>
-
-            <div className="modal-main">
-
-                <img src={ btnCloseModal } alt="" className='modal-close'  onClick={ ()=> closeModal() } />
-
-                { children }
-            </div>
-
-        </div>
-    )
-
+  return (
+    <div className='modal'>
+      <div className="modal-main">
+        <img src={btnCloseModal} alt="" className='modal-close' onClick={() => closeModal()} />
+        {children}
+      </div>
+    </div>
+  )
 }

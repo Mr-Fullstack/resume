@@ -52,16 +52,16 @@ export default function Formation() {
             }
 
             <div className='formation-card-list animation:md-opacity animation:delay-300ms'>
-              <h2>Cursos</h2>
+              <h2>Tecnologias</h2>
               {courses.map(course => (
                 <div className='formation-card' key={course.name}>
                   <div className="d:flex align:baseline justify:between w-100">
                     <span>
                       {course.name}
                     </span>
-                    <span id={generateLowerCaseClassName(course.name)} >
+                    {/* <span id={generateLowerCaseClassName(course.name)} >
                       {course.hour} h
-                    </span>
+                    </span> */}
                     {
                       <div className={"d:flex align:center justify:between " + course.status} >
                         <div className='rect:s-15' ></div>
