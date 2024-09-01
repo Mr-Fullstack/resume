@@ -12,6 +12,10 @@ export default function Formation() {
 
   const generateLowerCaseClassName = (value: string) => value.toLowerCase().split(" ").join("-").trim();
 
+  const yearDiffPlural = (yearDiff:number) => {
+    return yearDiff > 1 ? 's' :''
+  }
+  
   React.useEffect(() => {
     if (elements.length <= 0) {
       let ids: string[] = [];
@@ -43,7 +47,7 @@ export default function Formation() {
                 <div className="formation-box animation:md-opacity animation:delay-300ms">
                   <div className="formation-box-detail">
                     <span>{formation.area}</span>
-                    <span>{`${dateDiff} ${yearDiff > 0 ? 'anos': 'meses' } ` }</span>
+                    <span>{`${dateDiff} ${ yearDiff > 0 ? `ano${yearDiffPlural(yearDiff)} `: 'meses' }` }</span>
                   </div>
                   <h3 className='fw-600'>{formation.title}</h3>
                   <span>{`${formation.institution} (${formation.dateStart.getFullYear()} - ${formation.dateFinish.getFullYear()})`}</span>

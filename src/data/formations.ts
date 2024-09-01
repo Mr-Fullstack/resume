@@ -16,6 +16,20 @@ export interface Courses {
 
 export const formations: Formation[] = [
 	{
+		area:'Tecnologia',
+		title:'Jogos Digitais',
+		dateStart:new Date("August 16, 2024 14:30:00"),
+		dateFinish:new Date("January 24, 2027 21:00:00"),
+		institution:"Wyden"
+	},
+	{
+		area:'Formação Backend',
+		title:'Java Web FullStack e Spring Boot REST API',
+		dateStart:new Date("January 04, 2024 14:30:00"),
+		dateFinish:new Date("December 20, 2025 21:00:00"),
+		institution:"JDev Treinamento"
+	},
+	{
 		area:'Formação Backend',
 		title:'Backend com foco em Node JS',
 		dateStart:new Date("July 07, 2023 14:30:00"),
@@ -23,7 +37,7 @@ export const formations: Formation[] = [
 		institution:"Cubos Academy"
 	},
 	{
-		area:'Tecnólogo',
+		area:'Tecnologia',
 		title:'Análise e desenvolvimento de sistemas',
 		dateStart:new Date("January 04, 2016 19:30:00"),
 		dateFinish:new Date("March 19, 2019 19:00:00"),
@@ -32,26 +46,30 @@ export const formations: Formation[] = [
 ]
 
 export const courses: Courses[] = [
-
 	{
-		name: "MongoDB",
-		hour: 20,
-		status: 'in-progress',
-	},
-	{
-		name: "C# Fundamentos",
+		name: "Android kotlin e Java",
 		hour: 40,
 		status: 'in-progress',
 	},
 	{
+		name: "MongoDB",
+		hour: 20,
+		status: 'concluded',
+	},
+	{
+		name: "C# Fundamentos",
+		hour: 40,
+		status: 'concluded',
+	},
+	{
 		name: "C# Avançado",
 		hour: 60,
-		status: 'in-progress',
+		status: 'concluded',
 	},
 	{
 		name: "Typescript",
 		hour: 11,
-		status: 'in-progress'
+		status: 'concluded'
 	},
 	{
 		name: "Unity",
@@ -61,22 +79,22 @@ export const courses: Courses[] = [
 	{
 		name: "React Native",
 		hour: 65,
-		status: 'in-progress'
+		status: 'concluded'
 	},
 	{
 		name: "UX Design Heurísticas",
 		hour: 8,
-		status: 'in-progress'
+		status: 'concluded'
 	},
 	{
 		name: "Tipografia Avançada",
 		hour: 12,
-		status: 'in-progress'
+		status: 'concluded'
 	},
 	{
 		name: "UI Design Avançado",
 		hour: 15,
-		status: 'in-progress'
+		status: 'concluded'
 	},
 	{
 		name: "Redux",

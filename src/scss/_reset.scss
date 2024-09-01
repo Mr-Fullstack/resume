@@ -54,6 +54,30 @@ img
     background-color: $gray;
 }
 
+
+.btn-download {
+     
+    position: fixed;
+    z-index: 99999;
+    right: 3.2rem;
+    top: 2rem;
+    background: rgb(36, 36, 36);
+    color: rgb(123 123 123);
+    padding: .8rem;
+    border-radius: .8rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    column-gap: .4rem;
+    font-weight: 600;
+
+    &:hover{
+    color: $shadow-secondary-1;
+    filter: drop-shadow(2px 4px 6px black);
+    }
+}
+
+
 h1,
 h2,
 h3{
