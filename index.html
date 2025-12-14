@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS INTELLIGENCE // UNIFIED SYSTEM</title>
+    
+    <!-- Importando fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./simplemde.min.css">
+    <script src="./simplemde.min.js"> </script>
+    <style>
+        /* --- RESET & BASIC SETUP --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: thin; scrollbar-color: #33ff33 #000; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #33ff33; border-radius: 4px; }
+
+        body {
+            background-color: #050505;
+            color: #33ff33;
+            font-family: 'VT323', monospace;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* --- CRT SCANLINE EFFECT --- */
+        body::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 1000;
+             background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+
+        /* --- BOOT SCREEN (LOADING) --- */
+        #boot-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 2000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
+        }
+        .loading-text {
+            font-size: 1.5rem; width: 100%; max-width: 600px; height: 300px;
+            overflow-y: auto; color: #33ff33; text-shadow: 0 0 5px #33ff33; margin-top: 20px;
+        }
+
+        /* --- DESKTOP --- */
+        #desktop {
+            flex: 1;
+            background-image: radial-gradient(circle at center, #1a2a1a 0%, #000000 100%);
+            background-size: cover;
+            position: relative;
+            padding: 20px;
+            display: none; /* Hidden until boot finishes */
+        }
+
+        .top-bar {
+            position: absolute; top: 0; left: 0; width: 100%;
+            background: #0a0a0a; border-bottom: 1px solid #33ff33;
+            padding: 5px 20px; display: flex; justify-content: space-between;
+            align-items: center; font-size: 1.2rem; z-index: 10;
+        }
+
+        /* --- ICONS --- */
+        .icons-container {
+            margin-top: 50px; display: flex; flex-direction: column; gap: 40px; width: fit-content;
+        }
+        .desktop-icon {
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; width: 130px; transition: transform 0.2s;
+        }
+        .desktop-icon:hover { transform: scale(1.1); }
+        .icon-text {
+            background: #000; color: #33ff33; padding: 2px 5px; margin-top: 5px;
+            font-size: 1rem; text-shadow: 0 0 5px #33ff33;
+        }
+
+        .folder-ico {
+            width: 60px; height: 45px; background: #d4c585; border-radius: 0 5px 5px 5px; position: relative;
+            box-shadow: 0 0 10px rgba(212, 197, 133, 0.3);
+        }
+          
+        .folder-ico::before {
+            content: ''; position: absolute; top: -8px; left: 0; width: 25px; height: 8px;
+            background: #d4c585; 
+            border-radius: 5px 5px 0 0;
+        }
+
+        .file-ico {
+            width: 42px;
+            height: 53px;
+            border-radius: 0 5px 5px 5px;
+            position: relative;
+            background: #eee;
+            box-shadow: 0 0 10px rgba(219, 218, 212, 0.3);
+            border-bottom-color: #eee;
+            border: 6px transparent inset;
+            border-top-left-radius: 20px;
+        }
+
+        .file-ico::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            border: 14px transparent inset;
+            transform: rotate(135deg);
+            border-bottom-color: #eee;
+            filter: drop-shadow(-1px -2px 2px rgba(0, 0, 0, 0.5));
+            border-radius: 8px;
+        }
+
+        .my-folder-stamp {
+            position: absolute;
+            top: 15px;
+            left: -2px;
+            border: 1px solid #c00;
+            color: #c00;
+            font-size: 9px;
+            padding: 1px;
+            font-family: 'Special Elite';
+            transform: rotate(-10deg);
+            font-weight: bold;
+        }
+
+        .radar-ico {
+            width: 60px; height: 60px; border-radius: 50%; border: 2px solid #33ff33;
+            position: relative; background: #001100; overflow: hidden;
+            box-shadow: 0 0 10px #33ff33;
+        }
+        .radar-sweep {
+            width: 50%; height: 50%; background: linear-gradient(90deg, rgba(51,255,51,0.5), transparent);
+            position: absolute; top: 0; left: 0; transform-origin: 100% 100%;
+            animation: sweep 2s infinite linear;
+        }
+        @keyframes sweep { 100% { transform: rotate(360deg); } }
+
+        /* --- WINDOWS --- */
+        .window {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+            background: #000; border: 2px solid #33ff33; box-shadow: 0 0 20px rgba(51,255,51,0.2);
+            display: none; flex-direction: column; z-index: 100; opacity: 0; transition: all 0.3s;
+        }
+        .window.open { display: flex; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        .win-header {
+            background: #33ff33; color: #000; padding: 5px 10px; font-weight: bold;
+            display: flex; justify-content: space-between; align-items: center; cursor: move;
+        }
+        .win-close { cursor: pointer; background: #000; color: #33ff33; border: none; padding: 0 5px; font-weight: bold; }
+        .win-close:hover { background: #c00; color: #fff; }
+        .win-body { padding: 0; overflow: hidden; position: relative; flex: 1; display: flex; }
+
+        /* --- RADAR APP --- */
+        #radar-window { width: 900px; height: 600px; }
+        .radar-sidebar {
+            width: 300px; border-right: 1px solid #33ff33; display: flex; flex-direction: column; background: #051005;
+        }
+        .search-bar { padding: 10px; border-bottom: 1px solid #33ff33; }
+        .search-bar input {
+            width: 100%; background: #000; color: #33ff33; border: 1px solid #33ff33;
+            padding: 5px; font-family: 'VT323'; font-size: 1.1rem;
+        }
+        .agent-list { overflow-y: auto; flex: 1; }
+        .agent-item {
+            padding: 10px; border-bottom: 1px solid #1a331a; cursor: pointer;
+            display: flex; justify-content: space-between;
+        }
+        .agent-item:hover { background: #0f2b0f; }
+        .agent-rank { color: #c00; font-weight: bold; margin-right: 10px; }
+
+        .radar-main {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, #0a1a0a, #000); text-align: center;
+            flex-direction: column; padding: 20px;
+        }
+
+        .join-btn {
+            background: #33ff33; color: #000; border: none; padding: 10px; width: 100%;
+            font-family: 'VT323'; font-weight: bold; cursor: pointer; border-top: 1px solid #000;
+        }
+        .join-btn:hover { background: #fff; }
+
+        /* --- REGISTER FORM --- */
+        #register-window { width: 500px; height: auto; background: #001100; }
+        .form-container { padding: 20px; color: #33ff33; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; opacity: 0.8; }
+        .form-group input, .form-group textarea {
+            width: 100%; background: #000; border: 1px solid #33ff33; color: #33ff33;
+            padding: 8px; font-family: 'VT323'; font-size: 1.1rem;
+        }
+        .submit-btn {
+            background: #33ff33; color: #000; padding: 10px 20px; border: none; cursor: pointer;
+            font-family: 'VT323'; font-size: 1.2rem; width: 100%;
+        }
+
+
+        .paper-file {
+            background-color: #fdfbf7; 
+            color: #1a1a1a;
+            font-family: 'Special Elite', cursive;
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 10px 10px 50px rgba(0,0,0,0.9);
+            position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5 2.24 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .paper-header {
+            border-bottom: 2px solid #333; margin-bottom: 20px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .stamp-box {
+            border: 3px solid #c00; color: #c00; padding: 5px 15px; font-weight: bold; transform: rotate(-3deg); font-size: 1.5rem; opacity: 0.8;
+        }
+
+        .dossier-grid { display: grid; grid-template-columns: 200px 1fr; gap: 30px; }
+        .photo-area {
+            width: 100%; height: 250px; background: #e0e0e0; border: 2px solid #333;
+            display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #888;
+            position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+        .paper-clip {
+            position: absolute; top: -25px; left: 40px; width: 15px; height: 45px;
+            border: 3px solid #444; border-radius: 10px; border-bottom: none; z-index: 5;
+        }
+
+        /* --- RESTORED V1 FIELD STYLES --- */
+        .field-label {
+            font-weight: bold; text-transform: uppercase; font-size: 0.9rem; color: #444; margin-top: 15px;
+        }
+        .field-value {
+            font-size: 1.2rem; border-bottom: 2px dashed #888; padding-bottom: 2px;
+            font-family: 'Special Elite', monospace; color: #000;
+        }
+
+        .project-card {
+            margin-top: 20px; border: 1px solid #333; padding: 10px; position: relative;
+        }
+        .project-stamp {
+             position: absolute; top: -10px; right: 10px; background: #fdfbf7; padding: 0 5px;
+             font-size: 0.8rem; font-weight: bold; color: #c00;
+        }
+
+        .vote-btn {
+            background: #c00; color: #fff; border: none; padding: 10px 20px;
+            font-family: 'VT323', monospace; font-size: 1.2rem; cursor: pointer;
+            margin-top: 20px; width: 100%; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        .vote-btn:disabled { background: #555; }
+
+        @media (max-width: 800px) {
+            #dossier-window { width: 95%; height: 90%; }
+            .dossier-grid { grid-template-columns: 1fr; }
+            .photo-area { width: 150px; margin: 0 auto; }
+            #radar-window { width: 95%; }
+            .radar-sidebar { width: 100%; }
+            .radar-main { display: none; } /* Hide empty state on mobile */
+        }
+
+     /* --- DOSSIER MODAL (The Window) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+         .dossier-paper {
+            background-color: #fdfbf7; /* Paper color */
+            width: 800px;
+            max-width: 95%;
+            height: 85vh;
+            overflow-y: auto;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            font-family: 'Special Elite', cursive; /* Typewriter font */
+            color: #1a1a1a;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        } 
+
+        .folder-paper {
+            display: grid;
+            gap: 3rem;
+            align-content: flex-start;
+            background-color: #fffbde; /* Paper color */
+            width: 800px;
+            max-width: 95%;
+            height: 85vh;
+            overflow-y: auto;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            font-family: 'Special Elite', cursive; /* Typewriter font */
+            color: #1a1a1a;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .folder-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+         .folder-container .desktop-icon {
+           width: 118px;
+        }
+
+        .desktop-icon.icon-secret .folder-ico{
+          opacity: .2;
+        }
+
+        .folder-container .icon-text {
+            background: transparent; 
+            color: #333; 
+            font-size: .89rem;
+            text-shadow: unset;
+        }
+
+        .folder-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .modal-overlay.active .dossier-paper {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #a00;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .close-btn:hover { background: #d00; }
+
+        /* Dossier Content Styling */
+        .dossier-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .big-stamp {
+            color: #c00;
+            font-size: 2rem;
+            border: 4px solid #c00;
+            display: inline-block;
+            padding: 5px 20px;
+            transform: rotate(-5deg);
+            margin-bottom: 10px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .dossier-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .photo-frame {
+            border: 4px solid #333;
+            height: 250px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Placeholder for User Photo */
+        .photo-placeholder {
+            font-size: 4rem;
+            color: #888;
+        }
+
+        .paper-clip {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 15px;
+            height: 40px;
+            border: 3px solid #555;
+            border-radius: 10px;
+            border-bottom: none;
+            z-index: 10;
+        }
+
+        .field-label {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: #444;
+            margin-top: 10px;
+        }
+
+        .field-value {
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #999;
+            padding-bottom: 2px;
+            font-family: 'Special Elite', monospace;
+        }
+
+        .section-title {
+            background: #333;
+            color: #fff;
+            padding: 2px 10px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 700px) {
+            .dossier-grid { grid-template-columns: 1fr; }
+            .photo-frame { width: 150px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOOT SEQUENCE (Restored) -->
+    <div id="boot-screen">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#33ff33" stroke-width="2">
+            <path d="M50 5 L90 20 L80 80 L50 95 L20 80 L10 20 Z" />
+            <circle cx="50" cy="50" r="25" />
+            <path d="M50 25 L50 75 M25 50 L75 50" />
+            <text x="50" y="90" text-anchor="middle" stroke="none" fill="#33ff33" font-size="6" font-family="monospace">NEXUS</text>
+        </svg>
+        <div class="loading-text" id="console-output"></div>
+    </div>
+
+    <!-- MAIN DESKTOP -->
+    <div id="desktop">
+        <div class="top-bar">
+            <span>NEXUS OS v10.4</span>
+            <span id="clock">00:00:00</span>
+            <span>USER: GUEST_01</span>
+        </div>
+
+        <div class="icons-container">
+
+            <!-- PORTFOLIO -->
+             <div class="desktop-icon" onclick="openProfile(0)">
+                <div class="file-ico">
+                    <div class="my-folder-stamp">TOP SECRET</div>
+                </div>
+                <span class="icon-text">MY_DOSSIER#892.file</span>
+            </div>
+
+             <div class="desktop-icon" onclick="openModal('project-list-modal')">
+                <div class="folder-ico"></div>
+                <span class="icon-text">WRAPNATIVE PROJECT</span>
+            </div>
+
+            <!-- RANKING -->
+            <div class="desktop-icon" onclick="openWindow('radar-window')">
+                <div class="radar-ico">
+                    <div class="radar-sweep"></div>
+                </div>
+                <span class="icon-text">GLOBAL_RADAR.exe</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: GLOBAL RADAR -->
+    <div id="radar-window" class="window">
+        <div class="win-header">
+            <span>NEXUS // DATABASE SEARCH</span>
+            <button class="win-close" onclick="closeWindow('radar-window')">X</button>
+        </div>
+        <div class="win-body">
+            <div class="radar-sidebar">
+                <div class="search-bar">
+                    <input type="text" placeholder="SEARCH ALIAS..." id="search-input" onkeyup="filterDevs()">
+                </div>
+                <div class="agent-list" id="agent-list">
+                    <!-- JS Injected Items -->
+                </div>
+                <!-- LOGIN / REGISTER BUTTON -->
+                <button class="join-btn" onclick="openRegister()">+ JOIN DATABASE (LOGIN)</button>
+            </div>
+            <div class="radar-main">
+                <div class="radar-big-icon">?</div>
+                <h3>SELECT A TARGET</h3>
+                <p>Accessing global criminal database...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: REGISTER FORM -->
+    <div id="register-window" class="window">
+        <div class="win-header">
+            <span>NEW OPERATIVE REGISTRATION</span>
+            <button class="win-close" onclick="closeWindow('register-window')">X</button>
+        </div>
+        <div class="win-body">
+            <div class="form-container">
+                <div class="form-group">
+                    <label>CODENAME / ALIAS:</label>
+                    <input type="text" id="reg-alias" placeholder="e.g. The Cipher">
+                </div>
+                <div class="form-group">
+                    <label>REAL NAME (OPTIONAL):</label>
+                    <input type="text" id="reg-name" placeholder="e.g. John Doe">
+                </div>
+                <div class="form-group">
+                    <label>PRIMARY STACK:</label>
+                    <input type="text" id="reg-stack" placeholder="e.g. React / Node / Python">
+                </div>
+                <div class="form-group">
+                    <label>MAIN PROJECT NAME (CRIME):</label>
+                    <input type="text" id="reg-proj-title" placeholder="e.g. Project X">
+                </div>
+                <div class="form-group">
+                    <label>PROJECT DESCRIPTION:</label>
+                    <textarea id="reg-proj-desc" rows="3" placeholder="Brief description..."></textarea>
+                </div>
+                <button class="submit-btn" onclick="submitRegistration()">SAVE RECORD</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="project-list-modal">
+        <div class="folder-paper">
+            <h2 class="folder-title">WrapNative Project</h2>
+                <button class="close-btn" onclick="closeModal('project-list-modal')">X CLOSE FOLDER</button>
+            <div class="folder-container">
+                 <div class="desktop-icon icon-secret">
+                    <div class="folder-ico"></div>
+                    <span class="icon-text">.git</span>
+                </div>
+                <div class="desktop-icon" onclick="openModal('wrapnative-readme-modal')">
+                    <div class="file-ico"></div>
+                    <span class="icon-text">README.md</span>
+                </div>
+                <div class="desktop-icon">
+                    <div class="file-ico"></div>
+                    <span class="icon-text">index.html</span>
+                </div>
+                <div class="desktop-icon">
+                    <div class="file-ico"></div>
+                    <span class="icon-text">wrapnative.js</span>
+                </div>
+                <div class="desktop-icon">
+                    <div class="file-ico"></div>
+                    <span class="icon-text">style.css</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="wrapnative-readme-modal">
+        <div class="dossier-paper">
+            <h2 class="folder-title">README.md</h2>
+             <button class="close-btn" onclick="closeModal('wrapnative-readme-modal')">X CLOSE FILE</button>
+      
+            <div id="readme"></div>
+        </div>
+    </div>
+
+    <!-- DOSSIER MODAL -->
+    <div class="modal-overlay" id="dossier-modal">
+        <div class="dossier-paper">
+            <button class="close-btn" onclick="closeDossier()">X CLOSE FILE</button>
+            
+            <div class="paper-clip"></div>
+
+            <div class="dossier-header">
+                <div class="big-stamp">CLASSIFIED // NOFORN</div>
+                <h3>NEXUS INTELLIGENCE OF INVESTIGATION</h3>
+                <h2><span id="doc-stamp">MOST WANTED</span>: DEVELOPER</h2>
+            </div>
+
+            <div class="dossier-grid">
+                <!-- Left Column: Photo & Basic Stats -->
+                <div>
+                    <div class="photo-frame">
+                        <span class="photo-placeholder" id="doc-photo">?</span>
+                        <!-- Replace line above with <img src="url" style="width:100%; height:100%; object-fit:cover;"> -->
+                        <div style="text-align: center; margin-top: 10px; font-size: 0.8rem;">
+                        ID: <span id="doc-id">UNKNOWN</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; font-size: 0.8rem;">
+                        IMG_REF_9921<br> 
+                    </div>
+                   
+
+                    <p class="field-label">DATE OF BIRTH</p>
+                    <p class="field-value">25 / 09 / 199X</p>
+
+                    <p class="field-label">NATIONALITY</p>
+                    <p class="field-value" style="text-transform: uppercase;" id="doc-nationality">BRAZILIAN</p>
+                    
+                    <p class="field-label">STATUS</p>
+                    <p class="field-value" style="color:red; font-weight:bold;">AT LARGE (FREELANCER)</p>
+
+                    <p class="field-label">BOUNTY</p>
+                    <h2 id="doc-bounty" class="field-value" style="color:#c00; font-weight:bold;">0</h2>
+                    
+                    <button id="vote-btn" class="vote-btn" onclick="castVote()">
+                        REPORT THREAT (+1)
+                    </button>
+                </div>
+
+                <!-- Right Column: Details -->
+                <div>
+                    <p class="section-title">SUBJECT IDENTIFICATION</p>
+                    <p class="field-label">FULL NAME</p>
+                    <p class="field-value" id="doc-name">[SEU NOME COMPLETO AQUI]</p>
+                    
+                    <p class="field-label">ALIASES / CODENEAMES</p>
+                    <p class="field-value"><span id="doc-alias">[ALIAS NAME]</span></p>
+
+                    <p class="field-label">STACK / DEGREE </p>
+                    <p class="field-value" id="doc-stack">"Fullstack / System Architecture / UI Design"</p>
+
+                    <p class="section-title">CRIMINAL RECORD (PROJECTS)</p>
+                    <p style="margin-bottom: 15px;">Subject is wanted for creating high-performance interfaces.</p>
+
+                    <div id="doc-projects">
+                        <p class="field-label">INCIDENT #01: "PROJECT OMEGA"</p>
+                        <p class="field-value">A complex e-commerce system that scaled to 10k users.</p>
+                        
+                        <p class="field-label" style="margin-top:10px;">INCIDENT #02: "STEALTH UI"</p>
+                        <p class="field-value">Design system implemented for Fintech startup.</p>
+                    </div>
+
+                    <div id="doc-warning" style="display:none;">
+                        <p class="section-title">CAUTION / SKILLS</p>
+                        <p id="doc-warning-text">Subject is armed with <strong>JavaScript, React, and Figma</strong>. Extremely dangerous when caffeinated.</p>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; border-top: 2px solid #333; padding-top: 10px; text-align: center; font-size: 0.8rem;">
+                NEXUS INTELLIGENCE OF INVESTIGATION - IDEPARTMENT OF TECHNOLOGICAL JUSTICE
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+
+    // --- DATA ---
+    const myProfile = {
+        id: 0,
+        name: "Marcos Antônio Cerqueira Souza de Freitas",
+        alias: '"The Architect", "FullStack Phantom"',
+        stack: "Fullstack / System Architecture / UI Design",
+        bounty: 89000,
+        nationality:'brazilian',
+        photo: "ME",
+        warning: "Subject is armed with <strong>JavaScript, React, and Figma</strong>. Extremely dangerous when caffeinated.",
+        projects: [
+            { title: "WRAPNATIVE", desc: "A complex framework system to simplify the construction of a PWA." },
+            { title: "ONSCREENOFFERS", desc: "A complete and robust TV advertising display system." },
+            { title: "CLOUDKLASS", desc: "Software for teachers that helps them create and grade tests using AI.." },
+            { title: "NEXUS OS", desc: "Global developer tracking system." },
+        ]
+    };
+
+    const otherDevs = [
+        { id: 1, name: "Sarah Connors", alias: "The Terminator", nationality:'north american', stack: "Rust / C++", bounty: 15420, photo: "SC", projects: [{title: "SKYNET", desc: "AI Neural Net."}] },
+        { id: 2, name: "Elliot Alderson", alias: "Mr. Robot", nationality:'north american', stack: "Python / Security", bounty: 12800, photo: "EA", projects: [{title: "FSOCIETY", desc: "Encryption protocol."}] },
+        { id: 3, name: "Neo Anderson", alias: "The One", nationality:'north american', stack: "Matrix API", bounty: 9500, photo: "NA", projects: [{title: "DODGE_THIS", desc: "Bullet time physics."}] },
+        { id: 4, name: 'Edward Snowden', alias: "The Savior", nationality:'russian', stack: "XKeyscore / Security",bounty: 19500, photo: "NA", projects:[{title: "PRISM",desc: "NSA's secret mass surveillance programs"}]}
+    ];
+
+    let currentOpenDevId = null;
+
+    // --- BOOT SEQUENCE ---
+    const consoleOutput = document.getElementById('console-output');
+    const bootScreen = document.getElementById('boot-screen');
+    const desktop = document.getElementById('desktop');
+    
+    const logLines = [
+
+        "INITIALIZING NEXUS BIOS...",
+        "CHECKING MEMORY... OK",
+        "LOADING KERNEL 10.4... OK",
+        "MOUNTING ENCRYPTED VOLUMES... OK",
+        "ESTABLISHING SECURE CONNECTION...",
+        "CONNECTING TO GLOBAL DATABASE...",
+        "ENCRYPTING DATA STREAM (256-bit)...",
+        "CONNECTING TO FBI DATACENTER (DC-VA)...",
+        "VERIFYING SECURITY TOKENS...",
+        "VERIFYING BIOMETRICS...",
+        "ACCESS GRANTED.",
+        "WELCOME, AGENT."
+    ];
+        
+    let lineIndex = 0;
+
+    function typeLine() {
+        if (lineIndex < logLines.length) {
+            const p = document.createElement('div');
+            p.textContent = "> " + logLines[lineIndex];
+            consoleOutput.appendChild(p);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            lineIndex++;
+            setTimeout(typeLine, 300);
+        } else {
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                desktop.style.display = 'block';
+            }, 800);
+        }
+    }
+
+    window.onload = () => { setTimeout(typeLine, 500); updateClock(); };
+
+    // --- WINDOW MANAGER ---
+    function openWindow(id) {
+        document.getElementById(id).classList.add('open');
+        if(id === 'radar-window') renderRadarList();
+    }
+
+
+    function closeWindow(id) {
+        document.getElementById(id).classList.remove('open');
+    }
+
+    function openWrapNativeREADME()
+    {
+            document.getElementById('wrapnative-readme-modal').classList.add('active');
+    }
+
+    function openModal(id) 
+    {
+        document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+    
+    // --- PROFILE LOGIC ---
+    function openProfile(id) {
+        let data;
+        const btn = document.getElementById('vote-btn');
+        
+        if (id === 0) {
+            data = myProfile;
+            btn.style.display = 'none';
+            document.getElementById('doc-stamp').innerText = "ADMIN FILE";
+        } else {
+            data = otherDevs.find(d => d.id === id);
+            btn.style.display = 'block';
+            btn.innerText = "REPORT THREAT (+1)";
+            btn.disabled = false;
+            document.getElementById('doc-stamp').innerText = "MOST WANTED";
+        }
+
+        if (!data) return;
+
+        currentOpenDevId = id;
+
+        document.getElementById('doc-alias').innerText = data.alias;
+        document.getElementById('doc-name').innerText = data.name;
+        document.getElementById('doc-stack').innerText = data.stack;
+        document.getElementById('doc-bounty').innerText = data.bounty.toLocaleString();
+        document.getElementById('doc-id').innerText = "NX-" + data.id;
+        document.getElementById('doc-photo').innerText = data.photo;
+        document.getElementById('doc-nationality').innerText = data.nationality;
+        
+        if(data.warning)
+        {
+            console.log( document.getElementById('doc-warning'))
+            document.getElementById('doc-warning-text').innerHTML = data.warning;
+            document.getElementById('doc-warning').style.display = "block"
+        } 
+        
+        const projContainer = document.getElementById('doc-projects');
+        projContainer.innerHTML = '';
+        data.projects.forEach((p,index) => {
+            projContainer.innerHTML += `
+                <p class="field-label">INCIDENT #${(index+=1)}: "${p.title}"</p>
+                <p class="field-value">${p.desc}</p>
+            `;
+        });
+
+        //openWindow('dossier-window');
+        openDossier() 
+    }
+
+    // --- REGISTER LOGIC ---
+    function openRegister() {
+        closeWindow('radar-window'); // Optional: close radar to focus on form
+        openWindow('register-window');
+    }
+
+    function submitRegistration() {
+        const alias = document.getElementById('reg-alias').value;
+        const name = document.getElementById('reg-name').value;
+        const stack = document.getElementById('reg-stack').value;
+        const projTitle = document.getElementById('reg-proj-title').value;
+        const projDesc = document.getElementById('reg-proj-desc').value;
+
+        if(!alias || !stack) {
+            alert("ERROR: CODENAME AND STACK ARE REQUIRED FIELDS.");
+            return;
+        }
+
+        const newId = otherDevs.length + 10;
+        const newDev = {
+            id: newId,
+            name: name || "Unknown",
+            alias: alias,
+            stack: stack,
+            bounty: 0,
+            photo: alias.substring(0,2).toUpperCase(),
+            projects: [{title: projTitle || "CLASSIFIED", desc: projDesc || "No details available."}]
+        };
+
+        otherDevs.push(newDev);
+        
+        // UI Feedback
+        closeWindow('register-window');
+        openWindow('radar-window'); // Re-open radar to show new list
+        alert("NEW OPERATIVE REGISTERED SUCCESSFULLY.");
+        
+        // Auto open new profile
+        // openProfile(newId); 
+    }
+
+    function openDossier() {
+        document.getElementById('dossier-modal').classList.add('active');
+    }
+
+    function closeDossier() {
+        document.getElementById('dossier-modal').classList.remove('active');
+        let docWarning = document.getElementById('doc-warning')
+        let docWarningText = document.getElementById('doc-warning-text').innerHTML = data.warning;
+        docWarning.style.display = 'none'
+    }
+
+    function openProjectList(){
+        document.getElementById('project-list-modal').classList.add('active');
+    }
+
+    function closeProjectList(){
+            document.getElementById('project-list-modal').classList.remove('active');
+    }
+
+    // --- RADAR LOGIC ---
+    function renderRadarList() {
+        const list = document.getElementById('agent-list');
+        const term = document.getElementById('search-input').value.toLowerCase();
+        list.innerHTML = '';
+        
+        // Clone array to sort without messing up original order if needed
+        let displayList = [...otherDevs];
+        if(term) {
+            displayList = displayList.filter(d => d.alias.toLowerCase().includes(term));
+        }
+        displayList.sort((a,b) => b.bounty - a.bounty);
+
+        displayList.forEach((dev, index) => {
+            const item = document.createElement('div');
+            item.className = 'agent-item';
+            item.onclick = () => openProfile(dev.id);
+            item.innerHTML = `
+                <div>
+                    <span class="agent-rank">#${index+1}</span>
+                    ${dev.alias}
+                </div>
+                <div style="font-size:0.8rem; opacity:0.7;">${dev.bounty.toLocaleString()}</div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function filterDevs() { renderRadarList(); }
+
+    function castVote() {
+        if(!currentOpenDevId) return;
+        const dev = otherDevs.find(d => d.id === currentOpenDevId);
+        if(dev) {
+            dev.bounty += 100;
+            document.getElementById('doc-bounty').innerText = dev.bounty.toLocaleString();
+            document.getElementById('vote-btn').innerText = "THREAT REPORTED";
+            document.getElementById('vote-btn').disabled = true;
+            renderRadarList(); 
+        }
+    }
+
+    function updateClock() {
+        document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
+    }
+
+    setInterval(updateClock, 1000);
+
+    </script>
+</body>
+</html>
