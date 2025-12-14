@@ -1,0 +1,104 @@
+.project
+{
+
+    &-card
+    {
+        padding: 2rem 1.6rem 1rem;
+        width: 100%;
+        background-color: rgba($gray,0.10);
+        box-shadow: inset -3px -3px 0px $gray-2;
+        // backdrop-filter: blur(4px);
+        // margin-bottom: 3.2rem;
+        a+p{
+            margin-top: 2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+        p+a{
+            margin-top: .8rem;
+        }
+        h3{
+            color: $primary;
+            font-size: 2.4rem;
+        }
+        h3+a{
+            color: $secondary;
+        }
+        &:hover{
+            box-shadow: inset -3px -3px 0px $tertiary, 15px 20px 35px -35px $tertiary ;
+        }
+
+        .technology {
+            -webkit-line-clamp: 2;
+            text-overflow: clip;
+        }
+        &-header{
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            &-status{
+                color:$text;
+                p{
+                    display: flex;
+                    gap:.5rem;
+                    align-items: center;
+                    padding: .4rem;
+                    //border-radius: .2rem;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    width: auto;
+                    text-align: right;
+                    position: relative;
+                    text-shadow: 0px 2px 5px #212121;
+                    &:before{
+                        content: "";
+                        display: block;
+                        //position: absolute;
+                        right: 0px;
+                        top: -10x;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 230295px;
+                    }
+                }
+
+                width: fit-content;
+                display: flex;
+                align-items: center;
+                &.close{
+                    p{
+                        background-color: rgba($secondary,0.2);
+                        border:.1rem solid $secondary;
+                        &:before{
+                            background-color: $secondary;
+                        }
+                    }
+                }
+                &.open{
+                    p{
+                        background-color: rgba($primary,0.2);
+                        border:.1rem solid $primary;
+                        &:before{
+                            background-color: $primary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media (min-width:1200px) 
+    {
+        margin-top: 48rem;
+
+        .image-section
+        {
+            top: -234px;
+            right: 0px;
+            transform: translate3d(42%, 0px, 0px);
+        }
+    }
+
+}

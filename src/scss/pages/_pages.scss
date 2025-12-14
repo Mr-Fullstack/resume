@@ -1,0 +1,129 @@
+.separation
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 12rem;
+    height: 4px;
+    background-color: rgba($text,0.30);
+    margin-top: 2.4rem;
+    .artifact
+    {
+        &:last-child{
+            > div:first-child{
+                position: relative;
+                left: .6rem;
+            }
+            > div:last-child{
+                left: 0px
+            }
+        } 
+    }
+}
+
+
+.title-section
+{
+    text-align: left;
+    font-size: 4rem;
+    line-height: 1;
+    word-break: break-all;
+    margin-bottom: 0rem;
+
+    @media (min-width:1200px) {
+        font-size: 10rem;
+    }
+}
+
+.header-section
+{
+
+    position: relative;
+    will-change: transform;
+
+    @media (max-width:1200px)  {
+        margin-bottom: 2rem;
+    }
+
+    @media (min-width:1200px) {
+
+        position: sticky;
+        top: 100px;  
+
+    }
+}
+
+
+
+.image-section
+{
+    position: absolute;
+    z-index: -1;
+    height: auto;
+    display: none;
+
+    @media (min-width:1200px) 
+    {
+        display: block;
+        max-width: 900px;
+    }
+}
+
+.btn-available-job
+{
+    padding: 1rem;
+    background-color: rgba($gray,0.10);
+    backdrop-filter: blur(4px);
+    align-items: flex-start;
+    width: 35rem;
+    max-width: 100%;
+    display: flex;
+    cursor: pointer;
+    color: $text;
+    
+    &.--online{
+        box-shadow: inset -3px -3px 0px 0px $secondary;
+    }
+    &.--offline{
+        box-shadow: inset -3px -3px 0px 0px $attetion;
+    }
+}
+
+.artifact{
+    height: fit-content; 
+    display: flex;
+    align-items: center;
+    width: fit-content;
+
+    > div{
+        transform: rotate(45deg);
+        background-color: currentColor;
+    }  
+    > div + div
+    {
+        position: relative;
+        left: -.6rem;
+    } 
+}
+
+@media (min-width:1200px) 
+{
+    .header-section,
+    .timeline,
+    .project-list,
+    .formation-card-list,
+    .formation-box,
+    .contact-main,
+    .skills-list
+    {
+        opacity: 0;
+    }
+}
+
+
+@import './home';
+@import './experiencies';
+@import './project';
+@import './formation';
+@import './skills';
+@import './contact';

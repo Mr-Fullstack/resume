@@ -1,0 +1,72 @@
+.contact
+{
+  
+    a
+    {
+        color: $text;
+        max-width: 100%;
+        .artifact
+        {
+            margin-right: 1rem;
+        }
+        span
+        {
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            color: $tertiary;
+            line-height: 1;
+        } 
+        // p
+        // {
+        //     font-size: 2rem;
+        // }
+        // margin-top: 1.6rem;
+    }
+
+    &-card
+    {
+        background-color: rgba($gray,0.10);
+        backdrop-filter: blur(4px);
+        padding: 1.6rem;
+        margin-top: 1.6rem;
+        display: block;
+        color: $text;
+
+        &:hover
+        {
+           box-shadow: inset 3px 0px 0px $tertiary; 
+        }
+
+        .artifact
+        {
+            transform: rotate(90deg);
+            position: relative;
+            top: 2px;
+            margin-right: .4rem;
+            > div:first-child{
+                z-index: 1;
+            }
+        }
+       
+    }
+
+    h2
+    {
+        margin-top: 4.8rem;
+        margin-bottom: 3.2rem;
+    }
+
+    @media (min-width:1200px)
+    {
+        margin-top: 48rem;
+
+        .image-section
+        {
+            right: 0px;
+            top: -414px;
+            max-width: 1100px;
+            transform: translate3d(49%, 25px, 0px);
+        }   
+
+    }
+}
